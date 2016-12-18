@@ -3,6 +3,7 @@
 var gl,canvas;
 var background_program, BackGround;
 var game_time = 0;
+var event = new CustomEvent("image loaded"),IMAGE;
 
 var vertices = [
     vec4( -0.5, -0.5,  0.5, 1.0 ),
@@ -35,10 +36,10 @@ function init_canvas() {
     gl.enable(gl.DEPTH_TEST);
 }
 
-function bind(data,name,size,program) {
-	var buffer = gl.createBuffer();
-	gl.bindBuffer( gl.ARRAY_BUFFER, buffer );
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(data), gl.STATIC_DRAW );
+function bind(data,buffer,name,size,program ,send_data) {
+	if(buffer == undefined) buffer = gl.createBuffer();
+    gl.bindBuffer( gl.ARRAY_BUFFER, buffer );
+    if(send_data) gl.bufferData( gl.ARRAY_BUFFER, flatten(data), gl.STATIC_DRAW );
     
     var location = gl.getAttribLocation( program, name );
     if(location == -1){
@@ -47,6 +48,7 @@ function bind(data,name,size,program) {
     }
     gl.vertexAttribPointer( location, size, gl.FLOAT, false, 0, 0 );
     gl.enableVertexAttribArray( location );
+    return buffer;
 }
 
 
@@ -56,7 +58,10 @@ function load_image_excute(url,func) {
     image.crossOrigin = "";
 	image.src = url;
     image.onload = function() {
-  		func ( image );
+    	event.details = image.src;
+    	IMAGE = image;
+    	event.details = url;
+  		document.dispatchEvent(event);
 	};
 	image.onerror=function(){window.alert("failed to load image")};
 }
@@ -72,3 +77,20 @@ function vec_lenght(v) {
 }
 
 
+function configureTexture(image, texture, buffer, unit, location ,program ,send_data) {
+    if(texture == undefined) texture = gl.createTexture();
+    gl.activeTexture(unit);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+//    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    if(send_data) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+    gl.generateMipmap(gl.TEXTURE_2D);
+
+    //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    //
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.uniform1i(gl.getUniformLocation(program, buffer), location);
+    return texture;
+}

@@ -4,14 +4,14 @@ function background() {
 	var dr = [0,-1.4,0,0], disLoc;
 	var time = 0;
 	var points = [],vTexCoord = [];
-
+	var points_buffer,texture,TexCoord_buffer;
+	var image;
 
 	function create_background() {
 	    background_program = initShaders( gl, "background-vertex-shader", "background-fragment-shader" );
 		gl.useProgram( background_program );
 		create_scene();
-		bind_data();
-		render();
+		bind_data(true);
 	}
 
 	function create_scene() {
@@ -21,21 +21,31 @@ function background() {
 
 
 
-	function bind_data() {
-	    bind(points,"vPosition",4,background_program);
+	function bind_data(send_data) {
+	    points_buffer = bind(points,points_buffer,"vPosition",4,background_program,send_data);
 
-	    bind(vTexCoord,"vTexCoord",2,background_program);
+	    TexCoord_buffer = bind(vTexCoord,TexCoord_buffer,"vTexCoord",2,background_program ,send_data);
 
-		load_image_excute("grass-free-texture.jpg",function (image) {
-			configureTexture(image,"texture",gl.TEXTURE3, 3,background_program);
-		});
-
+	    url = "grass-free-texture.jpg";
+		if(image == undefined){
+			load_image_excute(url);
+			document.addEventListener("image loaded",function (e) {
+				if(e.details == url){
+		  			image = IMAGE;
+					texture = configureTexture(image, texture, "texture", gl.TEXTURE3, 3 ,background_program ,send_data)
+					event = new CustomEvent("image loaded");
+					render();
+				}
+			});
+		}
+		else texture = configureTexture(image, texture,"texture", gl.TEXTURE3, 3 ,background_program ,send_data);
 	    disLoc = gl.getUniformLocation( background_program, "dr" );
-
 	}
 
 	function render()
 	{
+		gl.useProgram(background_program);
+		bind_data(false);
 	    gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 	
@@ -43,7 +53,8 @@ function background() {
 
 	    gl.drawArrays( gl.TRIANGLES, 0, points.length );
 
-	    requestAnimFrame( render );
+	    //requestAnimFrame( render );
+	    gl.useProgram(null);
 	}
 
 
