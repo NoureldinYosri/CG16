@@ -7,7 +7,7 @@ function background() {
 
 
 	function create_background() {
-	    background_program = initShaders( gl, "vertex-shader", "fragment-shader" );
+	    background_program = initShaders( gl, "background-vertex-shader", "background-fragment-shader" );
 		gl.useProgram( background_program );
 		create_scene();
 		bind_data();

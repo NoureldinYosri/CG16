@@ -5,11 +5,10 @@
 		<title>la trago3 wla 2stslam (el kabda el damia)</title>
 
 		<!--shaders-->
-		<script id="vertex-shader" type="x-shader/x-vertex">
+		<script id="background-vertex-shader" type="x-shader/x-vertex">
 			attribute  vec4 vPosition;
 			attribute  vec4 vColor;
 			attribute  vec2 vTexCoord;
-			attribute  vec2 xxxx;
 
 			varying vec4 color;
 			varying vec2 fTexCoord;
@@ -29,7 +28,7 @@
 			}
 		</script>
 
-		<script id="fragment-shader" type="x-shader/x-fragment">
+		<script id="background-fragment-shader" type="x-shader/x-fragment">
 
 			precision mediump float;
 			varying vec4 color;
