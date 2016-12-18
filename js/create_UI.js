@@ -1,33 +1,30 @@
-function create_buttons() {
-    document.getElementById( "xButton" ).onclick = function () {
-        axis = xAxis;
-    };
-    document.getElementById( "yButton" ).onclick = function () {
-        axis = yAxis;
-    };
-    document.getElementById( "zButton" ).onclick = function () {
-        axis = zAxis;
-    };
-    document.getElementById( "rButton" ).onclick = function () {
-        rotate ^= 1;
-    };
-    document.getElementById( "xM+Button" ).onclick = function () {
-      	theta[0] += step;
-    };
-    document.getElementById( "yM+Button" ).onclick = function () {
-      	theta[1] += step;
-    };
-    document.getElementById( "zM+Button" ).onclick = function () {
-      	theta[2] += step;
-    };
-    document.getElementById( "xM-Button" ).onclick = function () {
-      	theta[0] -= step;
-    };
-    document.getElementById( "yM-Button" ).onclick = function () {
-      	theta[1] -= step;
-    };
-    document.getElementById( "zM-Button" ).onclick = function () {
-      	theta[2] -= step;
-    };
-    	
+
+
+function create_UI() {
+/*  function create_mover() {
+    var redraw = false;
+    var prv ;
+    canvas.addEventListener("mousedown", function(event){
+      redraw = true;
+      prv = vec4(2*event.clientX/canvas.width-1,2*(canvas.height-event.clientY)/canvas.height-1,0,0);
+    });
+
+    canvas.addEventListener("mouseup", function(event){
+      redraw = false;
+    });
+    //canvas.addEventListener("mousedown", function(){
+    canvas.addEventListener("mousemove", function(event){
+      if(redraw) {
+        var cur = vec4(2*event.clientX/canvas.width-1,2*(canvas.height-event.clientY)/canvas.height-1,0,0);
+        var dir = add(cur,scale(-1,prv));
+
+        prv = cur;
+      }
+
+    } );
+    
+  }
+ 
+  create_mover();   	
+*/
 }
