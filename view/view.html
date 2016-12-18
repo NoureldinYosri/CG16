@@ -18,11 +18,9 @@
 
 			void main() {
 			
-			    gl_PointSize = 10.0;
-		        gl_Position = vPosition + dr;
+				gl_PointSize = 10.0;
+				gl_Position = vPosition + dr;
 
-	//		    gl_Position.x = gl_Position.x + dr.x;
-	//		    gl_Position.y = gl_Position.y + dr.y;
 				color = vColor;
 				fTexCoord = vTexCoord;
 			}
@@ -34,9 +32,34 @@
 			varying vec4 color;
 			uniform sampler2D texture;
 			varying vec2 fTexCoord;
-    
+	
 			void main() {
-			    gl_FragColor = texture2D(texture, fTexCoord);
+				gl_FragColor = texture2D(texture, fTexCoord);
+			}
+	
+		</script>
+		<script id="obstacles-vertex-shader" type="x-shader/x-vertex">
+			attribute  vec4 vPosition;
+			attribute  vec4 vColor;
+			
+			varying vec4 color;
+			
+
+			void main() {
+			
+				gl_PointSize = 10.0;
+				gl_Position = vPosition;				
+				color = vColor;
+			}
+		</script>
+
+		<script id="obstacles-fragment-shader" type="x-shader/x-fragment">
+
+			precision mediump float;
+			varying vec4 color;
+	
+			void main() {
+				gl_FragColor = color;
 			}
 	
 		</script>
@@ -51,6 +74,7 @@
 		<!-- our js code -->
 
 		<script type="text/javascript" src="../js/background.js"></script>
+		<script type="text/javascript" src="../js/obstacles.js"></script>
 		<script type="text/javascript" src="../js/create_texture.js"></script>
 		<script type="text/javascript" src="../js/create_UI.js"></script>
 		<script type="text/javascript" src="../js/main.js"></script>

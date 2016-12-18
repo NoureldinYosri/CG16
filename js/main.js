@@ -2,8 +2,8 @@
 
 var gl,canvas;
 var background_program, BackGround;
+var obstacles_program , Obstacles;
 var game_time = 0;
-var event = new CustomEvent("image loaded"),IMAGE;
 
 var vertices = [
     vec4( -0.5, -0.5,  0.5, 1.0 ),
@@ -22,7 +22,8 @@ window.onload = function init()
 	init_canvas();
 	create_UI();
     BackGround = background();
-    BackGround.create_background();
+    Obstacles = obstacles();
+    render();
 }
 
 function init_canvas() {
@@ -53,18 +54,6 @@ function bind(data,buffer,name,size,program ,send_data) {
 
 
 
-function load_image_excute(url,func) {
-   	var image = new Image();
-    image.crossOrigin = "";
-	image.src = url;
-    image.onload = function() {
-    	event.details = image.src;
-    	IMAGE = image;
-    	event.details = url;
-  		document.dispatchEvent(event);
-	};
-	image.onerror=function(){window.alert("failed to load image")};
-}
 	
 
 function vec_lenght(v) {
@@ -83,7 +72,7 @@ function configureTexture(image, texture, buffer, unit, location ,program ,send_
     gl.bindTexture(gl.TEXTURE_2D, texture);
 //    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     if(send_data) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
-    gl.generateMipmap(gl.TEXTURE_2D);
+//    gl.generateMipmap(gl.TEXTURE_2D);
 
     //gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
@@ -93,4 +82,13 @@ function configureTexture(image, texture, buffer, unit, location ,program ,send_
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
     gl.uniform1i(gl.getUniformLocation(program, buffer), location);
     return texture;
+}
+
+
+function render() {
+    gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    BackGround.render();
+    Obstacles.render();
+
+    requestAnimFrame( render );
 }
