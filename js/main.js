@@ -56,13 +56,13 @@ function bind(data,buffer,name,size,program ,send_data) {
 
 	
 
-function vec_lenght(v) {
-	var n = min(v.length,3);
+function vec_length(v) {
+	var n = Math.min(v.length,3);
 	var l = 0;
 	for (var i = 0;i < n;i++)
 		l += v[i]*v[i];
 	l = Math.sqrt(l);
-	return max(l,1e-15);
+	return Math.max(l,1e-15);
 }
 
 
