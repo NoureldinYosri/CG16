@@ -43,12 +43,12 @@
 			attribute  vec4 vColor;
 			
 			varying vec4 color;
-			
+			uniform vec4 dr;
 
 			void main() {
 			
 				gl_PointSize = 10.0;
-				gl_Position = vPosition;				
+				gl_Position = vPosition + dr;				
 				color = vColor;
 			}
 		</script>

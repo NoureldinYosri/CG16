@@ -5,7 +5,7 @@ function background() {
 	var time = 0;
 	var points = [],vTexCoord = [];
 	var points_buffer,texture,TexCoord_buffer;
-	var image,step = 1e-2,original_dr = [0,-1.4,0,0],tick = 0;
+	var image,original_dr = [0,-1.4,0,0],speed = 50,tick = 0;
 
 	function create_background() {
 		background_program = initShaders( gl, "background-vertex-shader", "background-fragment-shader" );
@@ -48,15 +48,15 @@ function background() {
 		bind_data(false);
 		//gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-		if(game_time%5 == 0) {
-			dr = add(dr,vec4(-step,0,0,0));
-			tick += 1;
-		}
-		if(tick == 200) {
+		if(tick == speed) {
 			dr = original_dr;
 			tick = 0;
 		}
-		game_time += 1;
+		if(game_time%5 == 0) {
+			dr = add(dr,vec4(-1/speed,0,0,0));
+			tick += 1;
+		}
+
 		gl.uniform4fv( disLoc,dr);
 
 		gl.drawArrays( gl.TRIANGLES, 0, points.length );

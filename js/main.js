@@ -89,6 +89,6 @@ function render() {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     BackGround.render();
     Obstacles.render();
-
+    game_time += 1;
     requestAnimFrame( render );
 }
