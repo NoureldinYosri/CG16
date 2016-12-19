@@ -68,6 +68,64 @@
 			}
 	
 		</script>
+		<script id="character-vertex-shader" type="x-shader/x-vertex">
+			attribute  vec4 vPosition;
+			attribute  vec4 vColor;
+			attribute  vec2 vTexCoord;
+
+			varying vec4 color;
+			varying vec2 fTexCoord;
+
+			uniform vec3 theta;
+			mat4 rx,ry,rz;
+
+			void create_rot_matrix(){
+				vec3 angles = radians( theta );
+			    vec3 c = cos( angles );
+			    vec3 s = sin( angles );
+
+			    // Remeber: thse matrices are column-major
+			    rx = mat4( 1.0,  0.0,  0.0, 0.0,
+					    0.0,  c.x,  s.x, 0.0,
+					    0.0, -s.x,  c.x, 0.0,
+					    0.0,  0.0,  0.0, 1.0 );
+
+			    ry = mat4( c.y, 0.0, -s.y, 0.0,
+					    0.0, 1.0,  0.0, 0.0,
+					    s.y, 0.0,  c.y, 0.0,
+					    0.0, 0.0,  0.0, 1.0 );
+
+
+			    rz = mat4( c.z, s.z, 0.0, 0.0,
+					    -s.z,  c.z, 0.0, 0.0,
+					    0.0,  0.0, 1.0, 0.0,
+					    0.0,  0.0, 0.0, 1.0 );
+
+			}
+
+			void main() {
+				create_rot_matrix();
+				gl_PointSize = 10.0;
+				gl_Position = rz * ry * rz * vPosition;
+			//	gl_Position = vPosition;
+
+				color = vColor;
+				fTexCoord = vTexCoord;
+			}
+		</script>
+
+		<script id="character-fragment-shader" type="x-shader/x-fragment">
+
+			precision mediump float;
+			varying vec4 color;
+			uniform sampler2D texture;
+			varying vec2 fTexCoord;
+	
+			void main() {
+				gl_FragColor = color; //texture2D(texture, fTexCoord);
+			}
+	
+		</script>
 
 		<!--course library -->
 		<script type="text/javascript" src="../Common/webgl-utils.js"></script>
@@ -80,6 +138,7 @@
 
 		<script type="text/javascript" src="../js/background.js"></script>
 		<script type="text/javascript" src="../js/obstacles.js"></script>
+		<script type="text/javascript" src="../js/character.js"></script>
 		<script type="text/javascript" src="../js/create_texture.js"></script>
 		<script type="text/javascript" src="../js/create_UI.js"></script>
 		<script type="text/javascript" src="../js/main.js"></script>

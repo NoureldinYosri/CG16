@@ -3,6 +3,7 @@
 var gl,canvas;
 var background_program, BackGround;
 var obstacles_program , Obstacles;
+var character_program, Character;
 var game_time = 0;
 
 var vertices = [
@@ -23,6 +24,7 @@ window.onload = function init()
 	create_UI();
     BackGround = background();
     Obstacles = obstacles();
+    Character = character();
     render();
 }
 
@@ -89,6 +91,7 @@ function render() {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     BackGround.render();
     Obstacles.render();
+    Character.render();
     game_time += 1;
     requestAnimFrame( render );
 }
