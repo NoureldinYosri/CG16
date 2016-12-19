@@ -27,8 +27,27 @@ function create_UI() {
  
   create_mover();   	
 */
+	var step = 2;
   canvas.addEventListener("mousedown", function(event){
     Character.jump();
   });
+	document.getElementById("+x").onclick = function () {
+		Character.rotate([step,0,0]);
+	};
+	document.getElementById("-x").onclick = function () {
+		Character.rotate([-step,0,0]);
+	};
+	document.getElementById("+y").onclick = function () {
+		Character.rotate([0,step,0]);
+	};
+	document.getElementById("-y").onclick = function () {
+		Character.rotate([0,-step,0]);
+	};
+	document.getElementById("+z").onclick = function () {
+		Character.rotate([0,0,step]);
+	};
+	document.getElementById("-z").onclick = function () {
+		Character.rotate([0,0,-step]);
+	};
 
 }

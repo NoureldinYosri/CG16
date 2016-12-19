@@ -157,6 +157,9 @@ function character() {
 		,"jump":function () {
 			if(h == 0) jump = true;
 		}
+		,"rotate":function (v) {
+			theta = add(theta,v);
+		}
 	}
 }
 
