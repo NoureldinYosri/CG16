@@ -27,4 +27,8 @@ function create_UI() {
  
   create_mover();   	
 */
+  canvas.addEventListener("mousedown", function(event){
+    Character.jump();
+  });
+
 }

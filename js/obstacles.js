@@ -1,8 +1,8 @@
 function obstacles() {
-	var N = 20;
+	var N = 21;
 	var points = [],colors = [],vTexCoord = [];
 	var points_buffer,colors_buffer;
-	var speed = 50,tick = 0;
+	var speed = 40,tick = 0;
 	var dr = vec4(0,0,0,0);
 	var image,texture,TexCoord_buffer;
 
@@ -15,7 +15,7 @@ function obstacles() {
 
 	function create_scene(){
 		for (var i = 0;i < N;i++){
-			var dx = i - 1;
+			var dx = 2*i - 4;
 			var Obstacle = obstacle(dx);
 			for(var j = 0;j < Obstacle.points.length;j++){
 				points.push(Obstacle.points[j]);
@@ -23,7 +23,6 @@ function obstacles() {
 				vTexCoord.push(Obstacle.vTexCoord[j]);
 			}
 		}
-		console.log(points.length)
 	}
 
 	function bind_data(send_data){
@@ -49,7 +48,7 @@ function obstacles() {
 	function render() {
 		gl.useProgram(obstacles_program);
 		bind_data(false);
-		if(tick == speed) {
+		if(tick == 2*speed) {
 			dr = vec4(0,0,0,0);
 			tick = 0;
 		}

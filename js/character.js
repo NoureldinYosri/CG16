@@ -2,7 +2,7 @@
 function character() {
 	var points = [],vTexCoord = [],colors = [];
 	var points_buffer,texture,TexCoord_buffer,colors_buffer;
-	var image;
+	var image,h = 0,hLoc,step = 0.02,max_h = 0.75,jump = false;
 	var theta = vec3(0,90,0),thetaLoc;
 
 	var blue = [vec2(447,70),vec2(447,117),vec2(480,117),vec2(480,70)];
@@ -43,7 +43,6 @@ function character() {
 		for ( var i = 0; i < corners.length; ++i ) {
 			var r = vertices[corners[i]];
 			points.push(r);
-			console.log(TexCoord[idx])
 			var v = scale(1,TexCoord[idx][idx2][TexCoor[i]]);
 			v[0] /= 1482; v[1] /= 1173;
 			vTexCoord.push(v);
@@ -69,7 +68,9 @@ function character() {
 		torso.add_child(right_hand);
 		torso.add_child(left_leg);
 		torso.add_child(right_leg);
-		torso.traverse();
+		var M = mat4(1);
+		M[1][3] = 0;
+		torso.traverse(M);
 	}
 
 	function bind_data(send_data) {
@@ -90,15 +91,27 @@ function character() {
 		else texture = configureTexture(image, texture,"texture", gl.TEXTURE2, 2 ,character_program ,send_data);
 
 		thetaLoc = gl.getUniformLocation( character_program, "theta" );
+		hLoc = gl.getUniformLocation( character_program, "h" );
 	}
 		function render()
 	{
 		gl.useProgram(character_program);
 		bind_data(false);
-
-
+		if(game_time%5 == 0){
+			if(jump){
+				h += step;
+				if(h >= max_h) {
+					h = max_h;
+					jump = false;
+				}
+			}
+			else if(h > 0){
+				h -= step;
+				h = Math.max(h,0);
+			}
+		}
 		gl.uniform3fv( thetaLoc,theta);
-
+		gl.uniform1f( hLoc,h);
 		gl.drawArrays( gl.TRIANGLES, 0, points.length );
 
 		gl.useProgram(null);
@@ -141,7 +154,9 @@ function character() {
 
 
 	return {"render":render
-
+		,"jump":function () {
+			if(h == 0) jump = true;
+		}
 	}
 }
 

@@ -78,6 +78,7 @@
 
 			uniform vec3 theta;
 			mat4 rx,ry,rz;
+			uniform float h;
 
 			void create_rot_matrix(){
 				vec3 angles = radians( theta );
@@ -107,6 +108,7 @@
 				create_rot_matrix();
 				gl_PointSize = 10.0;
 				gl_Position = rz * ry * rz * vPosition;
+				gl_Position.y += h;
 			//	gl_Position = vPosition;
 
 				color = vColor;
